@@ -13,7 +13,7 @@ always_save_checkpoint = True
 # model
 n_layer = 12
 n_head = 12
-n_embd = 704
+n_embd = 768
 
 block_size = 1024
 
@@ -39,4 +39,4 @@ beta1 = 0.9
 beta2 = 0.95
 
 
-compile = True
+compile = False
