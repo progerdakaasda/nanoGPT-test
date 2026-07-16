@@ -254,17 +254,22 @@ if ddp:
 
 # helps estimate an arbitrarily accurate loss over either split using many batches
 @torch.no_grad()
+@torch.no_grad()
 def estimate_loss():
     out = {}
     model.eval()
+
     for split in ['train', 'validation']:
         losses = torch.zeros(eval_iters)
+
         for k in range(eval_iters):
             X, Y = get_batch(split)
             with ctx:
                 logits, loss = model(X, Y)
             losses[k] = loss.item()
+
         out[split] = losses.mean()
+
     model.train()
     return out
 
@@ -303,7 +308,7 @@ while True:
     # evaluate the loss on train/val sets and write checkpoints
     if iter_num % eval_interval == 0 and master_process:
         losses = estimate_loss()
-        print(f"step {iter_num}: train loss {losses['train']:.4f}, val loss {losses['val']:.4f}")
+        print(f"step {iter_num}: train loss {losses['train']:.4f}, val loss {losses['validation']:.4f}")
         if wandb_log:
             wandb.log({
                 "iter": iter_num,
@@ -312,8 +317,8 @@ while True:
                 "lr": lr,
                 "mfu": running_mfu*100, # convert to percentage
             })
-        if losses['val'] < best_val_loss or always_save_checkpoint:
-            best_val_loss = losses['val']
+        if losses['validation'] < best_val_loss or always_save_checkpoint:
+            best_val_loss = losses['validation']
             if iter_num > 0:
                 checkpoint = {
                     'model': raw_model.state_dict(),
