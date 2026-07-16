@@ -48,7 +48,7 @@ dataset = 'rustcoder'
 data_dir = 'data'
 
 gradient_accumulation_steps = 8
-batch_size = 8
+batch_size = 14
 block_size = 512
 # model
 # model
