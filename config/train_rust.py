@@ -22,7 +22,7 @@ bias = False
 
 
 # training
-batch_size = 8
+batch_size = 14
 gradient_accumulation_steps = 8
 
 max_iters = 200000
